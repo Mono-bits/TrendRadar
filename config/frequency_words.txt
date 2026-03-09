@@ -178,9 +178,9 @@
 
 /京东|刘强东|\bJD\b|\bJingdong\b/ => 京东
 
-/字节|张一鸣|梁汝波|抖音|\bByteDance\b|\bTikTok\b|\bDouyin\b|\bLark\b|\bCapCut\b/ => 字节跳动
+# /字节|张一鸣|梁汝波|抖音|\bByteDance\b|\bTikTok\b|\bDouyin\b|\bLark\b|\bCapCut\b/ => 字节跳动
 
-/腾讯|鹅厂|马化腾|微信|QQ|天美|阅文集团|微众银行|\bTencent\b|\bPony Ma\b|\bWeChat\b|\bLightSpeed\b|\bWeBank\b/ => 腾讯
+# /腾讯|鹅厂|马化腾|微信|QQ|天美|阅文集团|微众银行|\bTencent\b|\bPony Ma\b|\bWeChat\b|\bLightSpeed\b|\bWeBank\b/ => 腾讯
 
 /qwen|minimax|glm/ => 国产开源模型
 
@@ -204,19 +204,23 @@
 [中国]
 国产
 中国
+@5
 
 [东亚]
 日本
 朝鲜
 韩国
+@5
 
 [北美]
 美国
 加拿大
+@5
 
 [西欧]
 法国
 英国
+@5
 
 /俄罗斯|俄国/ => 俄罗斯
 

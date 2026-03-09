@@ -85,6 +85,7 @@ def send_to_feishu(
     *,
     batch_size: int = 29000,
     batch_interval: float = 1.0,
+    message_type: str = "text",
     split_content_func: Callable = None,
     get_time_func: Callable = None,
     rss_items: Optional[list] = None,
@@ -166,13 +167,37 @@ def send_to_feishu(
             f"发送{log_prefix}第 {i}/{len(batches)} 批次，大小：{content_size} 字节 [{report_type}]"
         )
 
-        # 飞书 webhook 只显示 content.text，所有信息都整合到 text 中
-        payload = {
-            "msg_type": "text",
-            "content": {
-                "text": batch_content,
-            },
-        }
+        # 根据配置选择消息类型：text 或 interactive（卡片+markdown）
+        use_interactive = message_type.lower() == "interactive"
+        if use_interactive:
+            # 使用交互式卡片以支持 markdown 渲染
+            title_suffix = f" ({i}/{len(batches)})" if len(batches) > 1 else ""
+            payload = {
+                "msg_type": "interactive",
+                "card": {
+                    "header": {
+                        "title": {
+                            "tag": "plain_text",
+                            "content": f"📊 趋势报告 - {report_type}{title_suffix}",
+                        },
+                        "template": "blue",
+                    },
+                    "elements": [
+                        {
+                            "tag": "markdown",
+                            "content": batch_content,  # 关键内容，支持 markdown
+                        }
+                    ],
+                },
+            }
+        else:
+            # 纯文本模式：所有信息整合到 content.text 中
+            payload = {
+                "msg_type": "text",
+                "content": {
+                    "text": batch_content,
+                },
+            }
 
         try:
             response = requests.post(

@@ -345,7 +345,7 @@ notification:
     feishu:
       webhook_url: ""                 # 飞书机器人 webhook URL
       # 消息类型：text(纯文本，长内容稳定) | interactive(卡片+markdown，格式更好)
-      message_type: "text"
+      message_type: "interactive"
       # 仅在使用 interactive 时生效；不配置则回退到 feishu 的 batch_size
       interactive_batch_size: 8000
 

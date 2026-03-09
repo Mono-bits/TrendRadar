@@ -348,12 +348,15 @@ class NotificationDispatcher:
     def _get_feishu_batch_size(self) -> int:
         """
         获取飞书批次大小：
-        - 若使用 interactive，则优先使用 FEISHU_INTERACTIVE_BATCH_SIZE（可选），否则回退到 FEISHU_BATCH_SIZE
+        - 若使用 interactive，则优先使用 FEISHU_INTERACTIVE_BATCH_SIZE（可选，<=0 视为未配置），否则回退到 FEISHU_BATCH_SIZE
         - 默认 FEISHU_BATCH_SIZE 为 29000
         """
         msg_type = self.config.get("FEISHU_MESSAGE_TYPE", "text").lower()
         if msg_type == "interactive":
-            return self.config.get("FEISHU_INTERACTIVE_BATCH_SIZE", self.config.get("FEISHU_BATCH_SIZE", 29000))
+            val = self.config.get("FEISHU_INTERACTIVE_BATCH_SIZE", 0)
+            if isinstance(val, int) and val > 0:
+                return val
+            return self.config.get("FEISHU_BATCH_SIZE", 29000)
         return self.config.get("FEISHU_BATCH_SIZE", 29000)
 
     def _send_dingtalk(
